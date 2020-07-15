@@ -28,3 +28,7 @@ class Comment(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commentator")
 	auction = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="commented_item")
 	comment = models.CharField(max_length=100)
+
+class wishlist(models.Model):
+	User =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="userwishes")
+	auction = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="wisheditem")

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing, Bids, Comment
+from .models import User, Listing, Bids, Comment, wishlist
 from django import forms
 
 
@@ -159,3 +159,11 @@ def description(request, title):
         "comment": comment_form(),
         "comments": comment
         }) 
+
+@login_required
+def addwishlist(request, title):
+    user = request.user
+    auction = Listing.objects.get(title=title)
+    w = wishlist(user = user , auction = auction)
+    w.save()
+    return HttpResponseRedirect(reverse("description"))
