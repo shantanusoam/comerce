@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% if user.is_authenticated %}
+		{% for object in check %}
+			<a href="{% url 'description' object.title %}">
+				<div class="listing">
+					<div class="image">
+						<img style="width: 150px;" src="{{ object.image_path }}">
+					</div>
+					<div class="title">
+						<h3>{{object.id}} {{object.title}}</h3>
+						<p style="font-size: 10px;"><span class="category">{{object.category}}</span></p>
+
+						<h6>{{ object.description }}</h6>
+						<h5 style="margin-top: 50px;">Rs. {{ object.item.bid }}</h5>
+
+						<p style="color: lightgrey; font-weight: bold; font-size: 15px;">Listed on {{ object.time}}</p>	
+					</div>
+				</div>
+			</a>		
+		{% endfor %}
+	{% else %}
+		<h4 style="margin-top: 30px;">Sign in to see the list</h4>
+	{% endif %}
+
+{% endblock %}

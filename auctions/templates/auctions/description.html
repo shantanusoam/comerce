@@ -1,0 +1,77 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    {% if user.is_authenticated %}
+	    <h2>Listing</h2>
+			
+			<div class="desc">
+				<div class="desc_image">
+					<img src="{{ desc.image_path }}" style="width: 300px; border-radius: 10px;">
+				</div>
+				<div class="desc_title">
+					<h1>{{desc.title}}</h1>
+					<p style="font-size: 10px;"><span class="category">{{desc.category}}</span></p>
+
+					<h6 style="margin-top: 30px;">{{desc.description }}</h6>
+					<h5 style="margin-top: 20px;">Rs. {{ bid.bid }}</h5>
+
+					<div >
+						<form action="{% url 'description' desc.title %}" method="post">
+							{% csrf_token %}
+							{{ form }}
+							<input type="submit" value="Place Bid" style="background-color: #1095de; color: white; border-radius: 10px; border: none;">
+						</form>
+					</div>
+
+					<h6 style="color: red;">{{message}}</h6>
+
+					<h6 style="margin-top: 20px;">Details:</h6>
+					<ul>
+						<h6>
+							<li>
+								Listed By: {{ desc.bidding_user }}
+							</li>
+							<li>
+								Category: {{ desc.category }}
+							</li>
+							<li>
+								Last Bidder: {{bid.user.username}}
+							</li>
+							<li>
+								Listed on: {{ desc.time }}
+							</li>
+						</h6>
+					</ul>	
+				</div>		
+			</div>
+
+			<hr>
+
+			<h5>Comments</h5>
+			<div>
+				<form action="{% url 'description' desc.title %}" method="post">
+					{% csrf_token %}
+					{{comment}}
+					<div style="margin-left: 120px;">
+						<input type="submit" value="comment">
+					</div>
+				</form>
+			</div>
+
+			<hr>
+
+			{% for comment in comments %}
+			<div class="listing">
+				<ul>
+					<li>
+						<span style="font-size: 20px;">{{comment.comment}}</span> - {{comment.user}}
+					</li>
+				</ul>
+			</div>
+			{% endfor %}
+	{% else %}
+		<h4 style="margin-top: 30px;">Sign in to see the item</h4>
+	{% endif %}
+
+{% endblock %}
