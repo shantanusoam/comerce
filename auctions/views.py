@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Listing, Bids, Comment, wishlist
@@ -166,4 +166,14 @@ def addwishlist(request, title):
     auction = Listing.objects.get(title=title)
     w = wishlist(user = user , auction = auction)
     w.save()
-    return HttpResponseRedirect(reverse("description"))
+    return HttpResponseRedirect(reverse("auctions/description"))
+
+@login_required
+def deletelist(request,desc_id):
+    desc = get_object_or_404(Listing, pk=desc_id)
+    if request.method == 'POST':
+        desc.delete()
+        return HttpResponseRedirect('/')
+    return render(request,"auctions/description.html",{
+        "auctions": Listing.objects.all()
+    })

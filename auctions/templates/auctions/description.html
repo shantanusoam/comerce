@@ -46,6 +46,10 @@
 				</div>		
 			</div>
 			<a href="url 'addwishlist' desc.title" >Add wish list</a>
+			<form action="{% url 'deletelist' desc.id %}" method="POST">
+				{% csrf_token %}
+				<input type="submit" value="Delete">
+			</form>
 			<hr>
 
 			<h5>Comments</h5>
